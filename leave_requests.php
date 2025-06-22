@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?php
 session_start();
 require_once('config.php');
@@ -74,3 +75,6 @@ $result = $conn->query($sql);
 
 </body>
 </html>
+=======
+
+>>>>>>> beca82754ec69cde4fa258a9181b972f9ac984bc
