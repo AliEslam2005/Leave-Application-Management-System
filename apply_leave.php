@@ -15,12 +15,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $start_date = $_POST['start_date'] ?? '';
     $end_date = $_POST['end_date'] ?? '';
     $reason = $_POST['reason'] ?? '';
-    
+
     if (strtotime($start_date) && strtotime($end_date) && strtotime($start_date) <= strtotime($end_date)) {
-  
         $stmt = $conn->prepare("INSERT INTO leave_applications (staff_id, leave_type_id, from_date, to_date, reason, status) VALUES (?, ?, ?, ?, ?, 'pending')");
         $stmt->bind_param("iisss", $user_id, $leave_type, $start_date, $end_date, $reason);
-        
+
         if ($stmt->execute()) {
             $message = "Leave application submitted successfully!";
         } else {
@@ -31,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-
 $leave_types = $conn->query("SELECT * FROM leave_types");
+$today = date('Y-m-d');
 ?>
 
 <!DOCTYPE html>
@@ -55,11 +54,11 @@ $leave_types = $conn->query("SELECT * FROM leave_types");
 <body>
     <div class="container">
         <h2>Apply for Leave</h2>
-        
+
         <?php if ($message): ?>
             <div class="message"><?= $message ?></div>
         <?php endif; ?>
-        
+
         <form method="POST">
             <div class="form-group">
                 <label for="leave_type">Leave Type:</label>
@@ -70,37 +69,27 @@ $leave_types = $conn->query("SELECT * FROM leave_types");
                     <?php endwhile; ?>
                 </select>
             </div>
-            
+
             <div class="form-group">
                 <label for="start_date">Start Date:</label>
-                <input type="date" name="start_date" id="start_date" required>
+                <input type="date" name="start_date" id="start_date" min="<?php echo $today ?>" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="end_date">End Date:</label>
-                <input type="date" name="end_date" id="end_date" required>
+                <input type="date" name="end_date" id="end_date" min="<?php echo $today ?>" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="reason">Reason:</label>
                 <textarea name="reason" id="reason" rows="4" required></textarea>
             </div>
-            
+
             <button type="submit">Submit Application</button>
         </form>
-        
+
         <br>
         <a href="menu.php">Back to Menu</a>
     </div>
-
-    <script>
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('start_date').min = today;
-        document.getElementById('end_date').min = today;
-        
-        document.getElementById('start_date').addEventListener('change', function() {
-            document.getElementById('end_date').min = this.value;
-        });
-    </script>
 </body>
 </html>

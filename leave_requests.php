@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['lea
     $leave_id = intval($_POST['leave_id']);
     $comment = $_POST['comment'] ?? '';
 
-    if (in_array($action, ['approved', 'rejected'])) {
+    if ($action === 'approved' || $action === 'rejected') {
         $stmt = $conn->prepare("UPDATE leave_applications SET status=?, manager_comment=? WHERE id=?");
         $stmt->bind_param("ssi", $action, $comment, $leave_id);
         $stmt->execute();
@@ -31,43 +31,58 @@ $result = $conn->query($sql);
 <html>
 <head>
     <title>Leave Requests</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        textarea { width: 100%; height: 60px; }
+    </style>
 </head>
 <body>
-    <h2>Leave Requests</h2>
-    <a href="menu.php">Back to Menu</a>
-    <table border="1" cellpadding="8">
-        <tr>
-            <th>Staff</th>
-            <th>Leave Type</th>
-            <th>Date Range</th>
-            <th>Reason</th>
-            <th>Status</th>
-            <th>Manager Comment</th>
-            <th>Action</th>
-        </tr>
-        <?php while($row = $result->fetch_assoc()): ?>
-            <tr>
-                <td><?= htmlspecialchars($row['name']) ?></td>
-                <td><?= htmlspecialchars($row['type_name']) ?></td>
-                <td><?= $row['from_date'] ?> to <?= $row['to_date'] ?></td>
-                <td><?= nl2br(htmlspecialchars($row['reason'])) ?></td>
-                <td><?= $row['status'] ?></td>
-                <td><?= nl2br(htmlspecialchars($row['manager_comment'])) ?></td>
-                <td>
-                    <?php if ($row['status'] == 'pending'): ?>
-                    <form method="POST" style="display:inline;">
-                        <input type="hidden" name="leave_id" value="<?= $row['id'] ?>">
-                        <textarea name="comment" placeholder="Comment"></textarea><br>
-                        <button name="action" value="approved">Approve</button>
-                        <button name="action" value="rejected">Reject</button>
-                    </form>
-                    <?php else: ?>
-                        (Finalized)
-                    <?php endif; ?>
-                </td>
-            </tr>
-        <?php endwhile; ?>
-    </table>
+
+<h2>Leave Requests</h2>
+<a href="menu.php">Back to Menu</a>
+
+<table>
+    <tr>
+        <th>Staff</th>
+        <th>Leave Type</th>
+        <th>Date Range</th>
+        <th>Reason</th>
+        <th>Status</th>
+        <th>Manager Comment</th>
+        <th>Action</th>
+    </tr>
+
+    <?php
+    while ($row = $result->fetch_assoc()) {
+        echo '<tr>';
+        echo '<td>' . $row['name'] . '</td>';
+        echo '<td>' . $row['type_name'] . '</td>';
+        echo '<td>' . $row['from_date'] . ' to ' . $row['to_date'] . '</td>';
+        echo '<td>' . nl2br($row['reason']) . '</td>';
+        echo '<td>' . $row['status'] . '</td>';
+        echo '<td>' . nl2br($row['manager_comment']) . '</td>';
+
+        echo '<td>';
+        if ($row['status'] === 'pending') {
+            echo '<form method="POST">';
+            echo '<input type="hidden" name="leave_id" value="' . $row['id'] . '">';
+            echo '<textarea name="comment" placeholder="Comment"></textarea><br>';
+            echo '<button name="action" value="approved">Approve</button> ';
+            echo '<button name="action" value="rejected">Reject</button>';
+            echo '</form>';
+        } else {
+            echo '(Finalized)';
+        }
+        echo '</td>';
+
+        echo '</tr>';
+    }
+    ?>
+
+</table>
+
 </body>
 </html>
-<?php
