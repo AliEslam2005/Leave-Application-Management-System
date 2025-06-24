@@ -1,9 +1,9 @@
 <?php 
 
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $database = "leave_system";
+    $servername = "sql106.infinityfree.com";
+    $username = "if0_39066130";
+    $password = "6QGPORy759";
+    $database = "if0_39066130_leave_system";
 
         
     $conn = mysqli_connect($servername, $username, $password, $database);
