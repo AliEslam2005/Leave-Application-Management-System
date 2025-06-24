@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     if (strtotime($start_date) && strtotime($end_date) && strtotime($start_date) <= strtotime($end_date)) {
   
-        $stmt = $conn->prepare("INSERT INTO leave_applications (staff_id, leave_type_id, start_date, end_date, reason, status) VALUES (?, ?, ?, ?, ?, 'pending')");
+        $stmt = $conn->prepare("INSERT INTO leave_applications (staff_id, leave_type_id, from_date, to_date, reason, status) VALUES (?, ?, ?, ?, ?, 'pending')");
         $stmt->bind_param("iisss", $user_id, $leave_type, $start_date, $end_date, $reason);
         
         if ($stmt->execute()) {

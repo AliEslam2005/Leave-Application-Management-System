@@ -2,7 +2,6 @@
 session_start();
 require_once('config.php');
 
-// 检查用户是否登录且角色是staff
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'staff') {
     header("Location: login.php");
     exit();
@@ -10,7 +9,6 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'staff') {
 
 $user_id = $_SESSION['user_id'];
 
-// 获取当前用户的所有请假申请
 $sql = "SELECT la.*, lt.type_name, 
         CASE la.status 
             WHEN 'pending' THEN 'Pending' 
@@ -66,8 +64,8 @@ $result = $stmt->get_result();
                     <?php while ($row = $result->fetch_assoc()): ?>
                         <tr>
                             <td><?= htmlspecialchars($row['type_name']) ?></td>
-                            <td><?= htmlspecialchars($row['start_date']) ?></td>
-                            <td><?= htmlspecialchars($row['end_date']) ?></td>
+                            <td><?= htmlspecialchars($row['from_date']) ?></td>
+                            <td><?= htmlspecialchars($row['to_date']) ?></td>
                             <td><?= htmlspecialchars($row['reason']) ?></td>
                             <td><?= date('M d, Y', strtotime($row['created_at'])) ?></td>
                             <td class="status-<?= $row['status'] ?>"><?= $row['status_text'] ?></td>
