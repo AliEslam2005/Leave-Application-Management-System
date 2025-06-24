@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['user_id']) || ($_SESSION['role'] !== 'staff' && $_SESSION['role'] !== 'manager')) {
+if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
 }
