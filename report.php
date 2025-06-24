@@ -2,6 +2,7 @@
 session_start();
 require_once('config.php');
 
+// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -10,6 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $role = $_SESSION['role'];
 
+// Basic search setup
 $search = '';
 $search_sql = '';
 $param = '';
@@ -22,12 +24,14 @@ if (isset($_GET['search'])) {
     }
 }
 
+// Base query
 $sql = "SELECT u.name, lt.type_name, la.from_date, la.to_date, la.status
         FROM leave_applications la
         JOIN users u ON la.staff_id = u.id
         JOIN leave_types lt ON la.leave_type_id = lt.id
         WHERE 1";
 
+// Apply role-based filters
 if ($role === 'staff') {
     $sql .= " AND la.staff_id = ?";
     $stmt = $conn->prepare($sql);
@@ -48,17 +52,21 @@ $result = $stmt->get_result();
 <html>
 <head>
     <title>Leave Report</title>
+    
     <style>
-        body { font-family: Arial, sans-serif; }
+        body { font-family: Arial, sans-serif; background-color: aquamarine;}
         table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; background-color: rgb(255, 255, 255); }
         th { background-color: #f2f2f2; }
         input[type="text"] { padding: 5px; width: 200px; }
         button { padding: 6px 12px; cursor: pointer;}
+        main {flex: 1; padding: 20px;}
     </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<main>
 <h2>Leave Report</h2>
 <a href="menu.php">Back to Menu</a>
 <br><br>
@@ -91,6 +99,9 @@ if ($role === 'manager') {
     }
     ?>
 </table>
-
+</main>
+<div class="footer">
+        <span class="copyright">© 2025. All rights reserved.</span>
+    </div>
 </body>
 </html>

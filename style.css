@@ -1,0 +1,146 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+}
+
+body {
+
+    background-color: aquamarine;
+    
+}
+
+.clickable {
+
+    cursor: pointer;
+}
+
+/*============================ LOGIN CSS ============================*/
+
+.container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.innerContainer {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    flex-direction: column;
+
+    background-color: rgb(179, 255, 230);
+    width: 25%;
+    height: auto;
+    padding: 20px;
+
+    border: 5px;
+    border-radius: 25px;
+    border-style: outset;
+}
+.innerContainer h2 {
+
+    font-size: 28px;
+    color: #00448d;
+    font-weight:900;
+}
+.innerContainer > form > input {
+
+    padding: 10px 20px; 
+    border-radius: 25px;
+    border:none;
+}
+
+#logbtn {
+
+    padding: 10px 20px; 
+    background: #007bff; 
+    color: white; 
+    border: none; 
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 25px;
+}
+
+#logbtn:active{
+
+    background: #00448d;
+}
+
+.footer {
+    
+    background-color: rgb(37, 37, 37);
+    font-size: 11px;
+    text-align: center;
+    padding: 10px;
+    font-weight: bolder;
+    color: white;
+
+    margin-top: 20px;
+}
+
+
+/*============================ MENU CSS ============================*/
+
+
+
+
+#menuIntro {
+
+    padding: 20px;
+    color: #00448d;
+    font-weight:900;
+    text-align: center;
+}
+
+.menuContainer {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    gap: 25px;
+}
+
+.menuContainer > a {
+
+    text-align: center;
+    text-decoration: none;
+    color: #035daf;
+    font-weight: bold;
+    margin: 0;
+    transition: background-color 0.3s;
+
+    background-color: rgb(179, 255, 230);
+    width: 25%;
+    height: auto;
+    padding: 20px;
+
+    border-style: outset;
+    border-width: 4px;
+    border-radius: 25px;
+    border-top-color: rgb(90, 189, 156);
+    border-left-color: rgb(90, 189, 156);
+    border-right-color: rgb(90, 189, 156);
+    border-bottom-color: rgb(90, 189, 156);
+}
+
+.menuContainer > a:hover {
+
+    background-color: rgb(91, 197, 162);
+}
+
+.menuContainer > a > img {
+
+    width: 150px;
+    height: auto;
+    
+}

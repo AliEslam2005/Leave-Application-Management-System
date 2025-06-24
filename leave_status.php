@@ -31,10 +31,10 @@ $result = $stmt->get_result();
 <head>
     <title>Leave Status</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        body { font-family: Arial, sans-serif; background-color: aquamarine; }
+        
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; background-color: rgb(255, 255, 255); }
         th { background-color: #f2f2f2; }
         .status-pending { color: #ff9800; font-weight: bold; }
         .status-approved { color: #4caf50; font-weight: bold; }
@@ -57,6 +57,7 @@ $result = $stmt->get_result();
         echo '<th>Reason</th>';
         echo '<th>Applied On</th>';
         echo '<th>Status</th>';
+        echo '<th>Manager Comment</th>';
         echo '</tr>';
 
         while ($row = $result->fetch_assoc()) {
@@ -67,6 +68,7 @@ $result = $stmt->get_result();
             echo '<td>' . $row['reason'] . '</td>';
             echo '<td>' . date('M d, Y', strtotime($row['created_at'])) . '</td>';
             echo '<td class="status-' . $row['status'] . '">' . $row['status_text'] . '</td>';
+            echo '<td>' . nl2br($row['manager_comment']) . '</td>';
             echo '</tr>';
         }
 

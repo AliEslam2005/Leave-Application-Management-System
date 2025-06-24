@@ -98,91 +98,188 @@ if ($edit_mode) {
     $heading = "Add User";
 }
 ?>
-<h2><?php echo $heading; ?></h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .adminContainer {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: rgb(179, 255, 230);
 
-<form method="POST">
-    <input type="hidden" name="edit_id" value="<?php echo $edit_id; ?>">
-
-    <label>Username:</label><br>
-    <input type="text" name="username" value="<?php echo $username; ?>" required><br><br>
-
-    <label>Name:</label><br>
-    <input type="text" name="name" value="<?php echo $name; ?>" required><br><br>
-
-    <label>Email:</label><br>
-    <input type="email" name="email" value="<?php echo $email; ?>" required><br><br>
-
-    <?php
-    if (!$edit_mode) {
-        echo '<label>Password:</label><br>';
-        echo '<input type="password" name="password" required><br><br>';
-    }
-    ?>
-
-    <label>Role:</label><br>
-    <select name="role">
-        <?php
-        if ($role == 'admin') {
-
-            echo '<option value="admin" selected>Admin</option>';
-            echo '<option value="manager">Manager</option>';
-            echo '<option value="staff">Staff</option>';
-        } elseif ($role == 'manager') {
-
-            echo '<option value="admin">Admin</option>';
-            echo '<option value="manager" selected>Manager</option>';
-            echo '<option value="staff">Staff</option>';
-        } else {
-
-            echo '<option value="admin">Admin</option>';
-            echo '<option value="manager">Manager</option>';
-            echo '<option value="staff" selected>Staff</option>';
+            border-radius: 25px;
+            border: 5px outset;
+            border-top-color: rgb(90, 189, 156);
+            border-left-color: rgb(90, 189, 156);
+            border-right-color: rgb(90, 189, 156);
+            border-bottom-color: rgb(90, 189, 156);
         }
-    ?>
-    </select><br><br>
 
-    
-    <label>Phone:</label><br>
-    <input type="text" name="phone" value="<?php echo $phone; ?>"><br><br>
+        .adminContainer h2,
+        .adminContainer h3 {
+            color: #00448d;
+            font-weight: 900;
+            text-align: center;
+        }
 
-    <label>Address:</label><br>
-    <input type="text" name="address" value="<?php echo $address; ?>"><br><br>
+        form label {
+            font-weight: bold;
+        }
 
-    <label>Department:</label><br>
-    <input type="text" name="department" value="<?php echo $department; ?>"><br><br>
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="password"],
+        form select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
 
-    <button type="submit"><?php echo $edit_mode ? "Update User" : "Add User"; ?></button>
+        button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 25px;
+        }
 
-    <?php if ($edit_mode): ?>
-        <a href="admin_user.php">Cancel</a>
-    <?php endif; ?>
-</form>
+        button:active {
+            background: #00448d;
+        }
 
-<h3>All Users</h3>
-<table border="1" cellpadding="10" style="border-collapse: collapse;">
-    <tr>
-        <th>ID</th>
-        <th>Username</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Actions</th>
-    </tr>
+        a {
+            color: #035daf;
+            text-decoration: none;
+            font-weight: bold;
+        }
 
-    <?php
-    $result = $conn->query("SELECT * FROM users");
-    while ($row = $result->fetch_assoc()) {
-        echo "<tr>";
-        echo "<td>" . $row['id'] . "</td>";
-        echo "<td>" . $row['username'] . "</td>";
-        echo "<td>" . $row['name'] . "</td>";
-        echo "<td>" . $row['email'] . "</td>";
-        echo "<td>" . ucfirst($row['role']) . "</td>";
-        echo "<td>";
-        echo "<a href='?edit=" . $row['id'] . "'>Edit</a> | ";
-        echo "<a href='?delete=" . $row['id'] . "' onclick=\"return confirm('Are you sure?');\">Delete</a>";
-        echo "</td>";
-        echo "</tr>";
-    }
-    ?>
-</table>
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .cancel-link {
+            display: inline-block;
+            margin-left: 10px;
+            color: red;
+        }
+
+        .back-link {
+            margin-top: 15px;
+            display: block;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+            background-color: rgb(255, 255, 255);
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .actions a {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="adminContainer">
+    <h2><?php echo $heading; ?></h2>
+
+    <form method="POST">
+        <input type="hidden" name="edit_id" value="<?php echo $edit_id; ?>">
+
+        <label>Username:</label>
+        <input type="text" name="username" value="<?php echo $username; ?>" required>
+
+        <label>Name:</label>
+        <input type="text" name="name" value="<?php echo $name; ?>" required>
+
+        <label>Email:</label>
+        <input type="email" name="email" value="<?php echo $email; ?>" required>
+
+        <?php if (!$edit_mode): ?>
+            <label>Password:</label>
+            <input type="password" name="password" required>
+        <?php endif; ?>
+
+        <label>Role:</label>
+        <select name="role">
+            <option value="admin" <?php if ($role == 'admin') echo 'selected'; ?>>Admin</option>
+            <option value="manager" <?php if ($role == 'manager') echo 'selected'; ?>>Manager</option>
+            <option value="staff" <?php if ($role == 'staff') echo 'selected'; ?>>Staff</option>
+        </select>
+
+        <label>Phone:</label>
+        <input type="text" name="phone" value="<?php echo $phone; ?>">
+
+        <label>Address:</label>
+        <input type="text" name="address" value="<?php echo $address; ?>">
+
+        <label>Department:</label>
+        <input type="text" name="department" value="<?php echo $department; ?>">
+
+        <button type="submit"><?php echo $edit_mode ? "Update User" : "Add User"; ?></button>
+
+        <?php if ($edit_mode): ?>
+            <a class="cancel-link" href="admin_user.php">Cancel</a>
+        <?php endif; ?>
+    </form>
+
+    <a class="back-link" href="menu.php">Back to Menu</a>
+
+    <h3>All Users</h3>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+
+        <?php
+        $result = $conn->query("SELECT * FROM users");
+        while ($row = $result->fetch_assoc()) {
+            echo "<tr>";
+            echo "<td>" . $row['id'] . "</td>";
+            echo "<td>" . $row['username'] . "</td>";
+            echo "<td>" . $row['name'] . "</td>";
+            echo "<td>" . $row['email'] . "</td>";
+            echo "<td>" . ucfirst($row['role']) . "</td>";
+            echo "<td class='actions'>";
+            echo "<a href='?edit=" . $row['id'] . "'>Edit</a> | ";
+            echo "<a href='?delete=" . $row['id'] . "' onclick=\"return confirm('Are you sure?');\">Delete</a>";
+            echo "</td>";
+            echo "</tr>";
+        }
+        ?>
+    </table>
+</div>
+<div class="footer">
+        <span class="copyright">© 2025. All rights reserved.</span>
+    </div>
+</body>
+</html>

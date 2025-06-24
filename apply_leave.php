@@ -2,6 +2,7 @@
 session_start();
 require_once('config.php');
 
+// Redirect if not logged in as staff
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'staff') {
     header("Location: login.php");
     exit();
@@ -10,6 +11,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'staff') {
 $user_id = $_SESSION['user_id'];
 $message = '';
 
+// Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $leave_type = $_POST['leave_type'] ?? '';
     $start_date = $_POST['start_date'] ?? '';
@@ -30,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
+// Get leave types
 $leave_types = $conn->query("SELECT * FROM leave_types");
 $today = date('Y-m-d');
 ?>
@@ -41,8 +44,8 @@ $today = date('Y-m-d');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apply for Leave</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+        body { font-family: Arial, sans-serif; background-color: aquamarine;}
+        .container { max-width: 600px; margin: 0 auto; padding: 20px;}
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; }
         input, select, textarea { width: 100%; padding: 8px; }
@@ -50,8 +53,11 @@ $today = date('Y-m-d');
         .message { color: green; margin: 10px 0; }
         .error { color: red; }
     </style>
+    
 </head>
 <body>
+
+<main>
     <div class="container">
         <h2>Apply for Leave</h2>
 

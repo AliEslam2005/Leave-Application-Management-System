@@ -10,6 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     
@@ -46,14 +47,30 @@
         }
     
     ?>
-    <h2>Login</h2>
-    
-    <form method="POST" action="">
 
-        <input type="text" name="username" placeholder="Username" required><br><br>
-        <input type="password" name="password" placeholder="Password" required><br><br>
-        <button type="submit">Login</button>
-    </form>
+    <div class="container">
+
+        <div class="innerContainer">
+
+            <h2>Login</h2>
+            <form method="POST" action="">
+
+                <input type="text" name="username" placeholder="Username" required><br><br>
+                <input type="password" name="password" placeholder="Password" required><br><br>
+                <button type="submit" class="clickable" id="logbtn">Login</button>
+            </form>
+        
+        </div>
+
+
+    </div>
+
+    <div class="footer">
+        <span class="copyright">© 2025. All rights reserved.</span>
+    </div>
+    
+    
+    
 
 </body>
 </html>

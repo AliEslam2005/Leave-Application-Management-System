@@ -43,27 +43,122 @@ $user = $user_result->fetch_assoc();
 $profile_result = $conn->query("SELECT * FROM user_profiles WHERE user_id = $user_id");
 $profile = $profile_result->fetch_assoc();
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .profileContainer {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: rgb(179, 255, 230);
+            border-radius: 25px;
+            border: 5px outset;
+            border-top-color: rgb(90, 189, 156);
+            border-left-color: rgb(90, 189, 156);
+            border-right-color: rgb(90, 189, 156);
+            border-bottom-color: rgb(90, 189, 156);
 
-<h2>My Profile</h2>
-<form method="POST">
-    <label>Name:</label><br>
-    <input type="text" name="name" value="<?php echo $user['name'] ?>" required><br><br>
+            font-family: Arial, sans-serif;
+        }
 
-    <label>Email:</label><br>
-    <input type="email" name="email" value="<?php echo $user['email'] ?>" required><br><br>
+        .profileContainer h2 {
+            text-align: center;
+            color: #00448d;
+            font-weight: 900;
+        }
 
-    <label>New Password (leave blank to keep current):</label><br>
-    <input type="password" name="password"><br><br>
+        form label {
+            font-weight: bold;
+        }
 
-    <label>Phone:</label><br>
-    <input type="text" name="phone" value="<?php echo $profile['phone'] ?? '' ?>"><br><br>
+        form input[type="text"],
+        form input[type="email"],
+        form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
 
-    <label>Address:</label><br>
-    <input type="text" name="address" value="<?php echo $profile['address'] ?? '' ?>"><br><br>
+        button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 25px;
+        }
 
-    <label>Department:</label><br>
-    <input type="text" name="department" value="<?php echo $profile['department'] ?? '' ?>"><br><br>
+        button:active {
+            background: #00448d;
+        }
 
-    <button type="submit">Update Profile</button> | 
-    <a href="menu.php">Back to Menu</a>
-</form>
+        a {
+            margin-left: 10px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #035daf;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .success-msg {
+            text-align: center;
+            color: green;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    
+</body>
+</html>
+<body>
+
+<div class="profileContainer">
+    <h2>My Profile</h2>
+
+    <?php if ($_SERVER['REQUEST_METHOD'] == 'POST'): ?>
+        <div class="success-msg">Profile updated!</div>
+    <?php endif; ?>
+
+    <form method="POST">
+        <label>Name:</label>
+        <input type="text" name="name" value="<?php echo $user['name'] ?>" required>
+
+        <label>Email:</label>
+        <input type="email" name="email" value="<?php echo $user['email'] ?>" required>
+
+        <label>New Password (leave blank to keep current):</label>
+        <input type="password" name="password">
+
+        <label>Phone:</label>
+        <input type="text" name="phone" value="<?php echo $profile['phone'] ?? '' ?>">
+
+        <label>Address:</label>
+        <input type="text" name="address" value="<?php echo $profile['address'] ?? '' ?>">
+
+        <label>Department:</label>
+        <input type="text" name="department" value="<?php echo $profile['department'] ?? '' ?>">
+
+        <button type="submit">Update Profile</button>
+        <a href="menu.php">Back to Menu</a>
+    </form>
+</div>
+<div class="footer">
+        <span class="copyright">© 2025. All rights reserved.</span>
+    </div>
+</body>
+</html>
