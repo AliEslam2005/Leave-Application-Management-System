@@ -2,13 +2,11 @@
 session_start();
 
 require_once('config.php');
-// Check if the user is logged in and is an admin
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     header("Location: login.php");
     exit();
 }
 
-// Initialize variables
 $edit_mode = false;
 $edit_id = '';
 $username = '';
@@ -16,7 +14,6 @@ $name = '';
 $email = '';
 $role = 'staff';
 
-// Handle delete request
 if (isset($_GET['delete'])) {
     $delete_id = $_GET['delete'];
     $conn->query("DELETE FROM users WHERE id = $delete_id");
@@ -24,7 +21,6 @@ if (isset($_GET['delete'])) {
     exit();
 }
 
-// Handle edit request
 if (isset($_GET['edit'])) {
     $edit_id = $_GET['edit'];
     $result = $conn->query("SELECT * FROM users WHERE id = $edit_id");
@@ -39,19 +35,18 @@ if (isset($_GET['edit'])) {
     }
 }
 
-// Handle form submission (add or update user)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $name = $_POST['name'];
     $email = $_POST['email'];
     $role = $_POST['role'];
 
-    // If editing an existing user
     if (!empty($_POST['edit_id'])) {
+
         $edit_id = $_POST['edit_id'];
         $conn->query("UPDATE users SET username='$username', name='$name', email='$email', role='$role' WHERE id=$edit_id");
     } else {
-        // Add a new user
+
         $password = md5($_POST['password']);
         $stmt = $conn->prepare("INSERT INTO users (username, password, name, email, role) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("sssss", $username, $password, $name, $email, $role);
@@ -63,7 +58,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<!-- HTML Part Starts -->
 <?php
 echo '<h2>';
     
@@ -75,7 +69,7 @@ echo '<h2>';
     
 echo '</h2>';
 ?>
-<!-- User Form -->
+
 <form method="POST">
     <input type="hidden" name="edit_id" value="<?php echo $edit_id; ?>">
 
@@ -134,7 +128,6 @@ echo '</h2>';
     ?>
 </form>
 
-<!-- User Table -->
 <h3>All Users</h3>
 <table border="1" cellpadding="10" style = "border-collapse: collapse">
     <tr>

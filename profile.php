@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
     $email = $_POST['email'];
     
-    // Optional: update password if provided
+    
     if (!empty($_POST['password'])) {
         $password = md5($_POST['password']);
         $conn->query("UPDATE users SET name='$name', email='$email', password='$password' WHERE id=$user_id");
