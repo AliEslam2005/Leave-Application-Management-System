@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 26, 2025 at 04:39 PM
+-- Generation Time: Jun 26, 2025 at 06:49 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -47,7 +47,45 @@ INSERT INTO `activity_logs` (`id`, `user_id`, `action`, `timestamp`) VALUES
 (56, 2, 'Rejected leave request ID 3', '2025-06-26 13:46:07'),
 (57, 2, 'Back to menu from leave_requests', '2025-06-26 13:46:25'),
 (58, 2, 'Viewed Reports', '2025-06-26 13:46:31'),
-(59, 2, 'Logged Out', '2025-06-26 13:46:49');
+(59, 2, 'Logged Out', '2025-06-26 13:46:49'),
+(60, 3, 'Logged in', '2025-06-26 14:57:17'),
+(61, 3, 'Viewed Profile', '2025-06-26 14:57:19'),
+(62, 3, 'Updated profile', '2025-06-26 15:01:34'),
+(63, 3, 'Updated profile', '2025-06-26 15:01:43'),
+(64, 3, 'Back to menu from profile', '2025-06-26 15:02:34'),
+(65, 3, 'Viewed Profile', '2025-06-26 15:02:39'),
+(66, 3, 'Updated profile', '2025-06-26 15:03:41'),
+(67, 3, 'Back to menu from profile', '2025-06-26 15:03:44'),
+(68, 3, 'Viewed Profile', '2025-06-26 15:04:05'),
+(69, 3, 'Back to menu from profile', '2025-06-26 15:04:10'),
+(70, 3, 'Logged Out', '2025-06-26 15:04:14'),
+(71, 1, 'Logged in', '2025-06-26 15:41:20'),
+(72, 1, 'Logged in', '2025-06-26 15:42:20'),
+(73, 1, 'Accessed Announcements Manager', '2025-06-26 15:42:24'),
+(74, 1, 'Accessed Announcements Manager', '2025-06-26 15:43:10'),
+(75, 1, 'Accessed Announcements Manager', '2025-06-26 15:43:12'),
+(76, 1, 'Accessed Announcements Manager', '2025-06-26 15:43:47'),
+(77, 1, 'Accessed Announcements Manager', '2025-06-26 15:44:05'),
+(78, 1, 'Logged Out', '2025-06-26 15:59:58'),
+(79, 1, 'Logged in', '2025-06-26 16:00:10'),
+(80, 1, 'Accessed Announcements Manager', '2025-06-26 16:00:34'),
+(81, 1, 'Accessed Announcements Manager', '2025-06-26 16:08:03'),
+(82, 1, 'Accessed Announcements Manager', '2025-06-26 16:21:44'),
+(83, 1, 'Logged Out', '2025-06-26 16:22:37');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `announcements`
+--
+
+CREATE TABLE `announcements` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `expires_at` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -143,7 +181,7 @@ CREATE TABLE `user_profiles` (
 INSERT INTO `user_profiles` (`user_id`, `phone`, `address`, `department`, `profile_picture`, `gender`, `date_of_birth`) VALUES
 (1, '0123456789', 'Admin Address', 'IT', NULL, NULL, NULL),
 (2, '0135792468', 'Manager Address', 'HR', NULL, NULL, NULL),
-(3, '0987654321', 'Staff Address', 'Development', NULL, NULL, NULL);
+(3, '0987654321', 'Staff Address', 'Development', './assets/test.jpg', 'male', '1997-05-05');
 
 --
 -- Indexes for dumped tables
@@ -155,6 +193,12 @@ INSERT INTO `user_profiles` (`user_id`, `phone`, `address`, `department`, `profi
 ALTER TABLE `activity_logs`
   ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
+
+--
+-- Indexes for table `announcements`
+--
+ALTER TABLE `announcements`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `leave_applications`
@@ -191,7 +235,13 @@ ALTER TABLE `user_profiles`
 -- AUTO_INCREMENT for table `activity_logs`
 --
 ALTER TABLE `activity_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=84;
+
+--
+-- AUTO_INCREMENT for table `announcements`
+--
+ALTER TABLE `announcements`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `leave_applications`

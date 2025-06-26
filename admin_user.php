@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 require_once('config.php');
 
 if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
@@ -8,7 +7,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
     exit();
 }
 
-
+$user_id = $_SESSION['user_id'];
 $edit_mode = false;
 $edit_id = '';
 $username = '';
@@ -20,15 +19,19 @@ $phone = '';
 $address = '';
 $department = '';
 
-
 if (isset($_GET['delete'])) {
     $delete_id = $_GET['delete'];
     $conn->query("DELETE FROM users WHERE id = $delete_id");
     $conn->query("DELETE FROM user_profiles WHERE user_id = $delete_id");
+
+    $action = "Deleted user ID $delete_id";
+    $stmt = $conn->prepare("INSERT INTO activity_logs (user_id, action) VALUES (?, ?)");
+    $stmt->bind_param("is", $user_id, $action);
+    $stmt->execute();
+
     header("Location: admin_user.php");
     exit();
 }
-
 
 if (isset($_GET['edit'])) {
     $edit_id = $_GET['edit'];
@@ -52,19 +55,16 @@ if (isset($_GET['edit'])) {
     }
 }
 
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $name = $_POST['name'];
     $email = $_POST['email'];
     $role = $_POST['role'];
-
     $phone = $_POST['phone'];
     $address = $_POST['address'];
     $department = $_POST['department'];
 
     if (!empty($_POST['edit_id'])) {
-
         $edit_id = $_POST['edit_id'];
         $conn->query("UPDATE users SET username='$username', name='$name', email='$email', role='$role' WHERE id=$edit_id");
 
@@ -75,8 +75,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $conn->query("INSERT INTO user_profiles (user_id, phone, address, department) VALUES ($edit_id, '$phone', '$address', '$department')");
         }
 
+        $action = "Edited user ID $edit_id";
     } else {
-        
+        $check = $conn->query("SELECT * FROM users WHERE username='$username' OR email='$email'");
+        if ($check->num_rows > 0) {
+            header("Location: admin_user.php");
+            exit();
+        }
+
         $password = md5($_POST['password']);
         $stmt = $conn->prepare("INSERT INTO users (username, password, name, email, role) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("sssss", $username, $password, $name, $email, $role);
@@ -84,9 +90,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $new_id = $conn->insert_id;
 
         $conn->query("INSERT INTO user_profiles (user_id, phone, address, department) VALUES ($new_id, '$phone', '$address', '$department')");
+
+        $action = "Added new user ID $new_id";
     }
 
+    $log = $conn->prepare("INSERT INTO activity_logs (user_id, action) VALUES (?, ?)");
+    $log->bind_param("is", $user_id, $action);
+    $log->execute();
+
     header("Location: admin_user.php");
+    exit();
+}
+
+if (isset($_GET['log']) && $_GET['log'] === 'back_to_menu') {
+    $action = "Back to menu from admin_user";
+    $stmt = $conn->prepare("INSERT INTO activity_logs (user_id, action) VALUES (?, ?)");
+    $stmt->bind_param("is", $user_id, $action);
+    $stmt->execute();
+    header("Location: menu.php");
     exit();
 }
 ?>
@@ -247,7 +268,7 @@ if ($edit_mode) {
         <?php endif; ?>
     </form>
 
-    <a class="back-link" href="menu.php">Back to Menu</a>
+    <a class="back-link" href="admin_user.php?log=back_to_menu">Back to Menu</a>
 
     <h3>All Users</h3>
     <table>

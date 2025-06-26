@@ -38,6 +38,12 @@
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['role'] = $user['role'];
 
+                $user_id = $user['id'];
+                $action = 'Logged in';
+                $log_stmt = $conn->prepare("INSERT INTO activity_logs (user_id, action) VALUES (?, ?)");
+                $log_stmt->bind_param("is", $user_id, $action);
+                $log_stmt->execute();
+
                 header("Location: menu.php");
                 exit();
             } else {

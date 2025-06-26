@@ -2,7 +2,6 @@
 session_start();
 require_once('config.php');
 
-// Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit();
@@ -11,7 +10,6 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = $_SESSION['user_id'];
 $role = $_SESSION['role'];
 
-// Basic search setup
 $search = '';
 $search_sql = '';
 $param = '';
@@ -24,14 +22,12 @@ if (isset($_GET['search'])) {
     }
 }
 
-// Base query
 $sql = "SELECT u.name, lt.type_name, la.from_date, la.to_date, la.status
         FROM leave_applications la
         JOIN users u ON la.staff_id = u.id
         JOIN leave_types lt ON la.leave_type_id = lt.id
         WHERE 1";
 
-// Apply role-based filters
 if ($role === 'staff') {
     $sql .= " AND la.staff_id = ?";
     $stmt = $conn->prepare($sql);
