@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 21, 2025 at 10:57 AM
+-- Generation Time: Jun 26, 2025 at 04:39 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -34,6 +34,21 @@ CREATE TABLE `activity_logs` (
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `activity_logs`
+--
+
+INSERT INTO `activity_logs` (`id`, `user_id`, `action`, `timestamp`) VALUES
+(51, 2, 'Logged Out', '2025-06-26 13:18:28'),
+(52, 2, 'Logged in', '2025-06-26 13:18:39'),
+(53, 2, 'Viewed Leave Applications', '2025-06-26 13:18:55'),
+(54, 2, 'Viewed Reports', '2025-06-26 13:19:25'),
+(55, 2, 'Viewed Leave Applications', '2025-06-26 13:44:45'),
+(56, 2, 'Rejected leave request ID 3', '2025-06-26 13:46:07'),
+(57, 2, 'Back to menu from leave_requests', '2025-06-26 13:46:25'),
+(58, 2, 'Viewed Reports', '2025-06-26 13:46:31'),
+(59, 2, 'Logged Out', '2025-06-26 13:46:49');
+
 -- --------------------------------------------------------
 
 --
@@ -51,6 +66,15 @@ CREATE TABLE `leave_applications` (
   `manager_comment` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `leave_applications`
+--
+
+INSERT INTO `leave_applications` (`id`, `staff_id`, `leave_type_id`, `from_date`, `to_date`, `reason`, `status`, `manager_comment`, `created_at`) VALUES
+(1, 3, 2, '2025-06-24', '2025-06-29', 'Because I can', 'approved', 'Pipe down lil bro', '2025-06-24 10:26:18'),
+(2, 3, 3, '2025-06-27', '2025-06-30', 'I\'m going to mars', 'rejected', 'nuh uh', '2025-06-24 11:21:56'),
+(3, 3, 1, '2025-06-24', '2025-06-25', 'I almost sneezed but I didn\'t. I still almost sneezed', 'rejected', 'crazy', '2025-06-24 11:29:38');
 
 -- --------------------------------------------------------
 
@@ -106,17 +130,20 @@ CREATE TABLE `user_profiles` (
   `user_id` int(11) NOT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `address` varchar(255) DEFAULT NULL,
-  `department` varchar(100) DEFAULT NULL
+  `department` varchar(100) DEFAULT NULL,
+  `profile_picture` varchar(255) DEFAULT NULL,
+  `gender` enum('male','female') DEFAULT NULL,
+  `date_of_birth` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user_profiles`
 --
 
-INSERT INTO `user_profiles` (`user_id`, `phone`, `address`, `department`) VALUES
-(1, '0123456789', 'Admin Address', 'IT'),
-(2, '0135792468', 'Manager Address', 'HR'),
-(3, '0987654321', 'Staff Address', 'Development');
+INSERT INTO `user_profiles` (`user_id`, `phone`, `address`, `department`, `profile_picture`, `gender`, `date_of_birth`) VALUES
+(1, '0123456789', 'Admin Address', 'IT', NULL, NULL, NULL),
+(2, '0135792468', 'Manager Address', 'HR', NULL, NULL, NULL),
+(3, '0987654321', 'Staff Address', 'Development', NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -164,13 +191,13 @@ ALTER TABLE `user_profiles`
 -- AUTO_INCREMENT for table `activity_logs`
 --
 ALTER TABLE `activity_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT for table `leave_applications`
 --
 ALTER TABLE `leave_applications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `leave_types`
@@ -182,7 +209,7 @@ ALTER TABLE `leave_types`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables
